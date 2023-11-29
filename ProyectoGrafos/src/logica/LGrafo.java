@@ -107,6 +107,29 @@ public class LGrafo extends BGrafo {
         return cadena;
     }
 
+    public int[][] MatrizAdyacenciaint(){
+        int[][] Matriz = new int[Id.length][Id.length];
+        for (int i = 0; i < List.length; i++) {
+            Nodo p = List[i];
+            while (p != null) {
+                if (i == BuscarIndex(p.getDato(), Id)) {
+                    Matriz[i][BuscarIndex(p.getDato(), Id)]++;
+                }
+                Matriz[i][BuscarIndex(p.getDato(), Id)]++;
+                p = p.getLiga();
+            }
+        }
+        return Matriz;
+    }
+
+    public char[] Idchar(){
+        char[] x = new char[Id.length];
+        for (int i = 0; i < x.length; i++) {
+            x[i] = Id[i].charAt(0);
+        }
+        return x;
+    }
+
     public String MatrizIncidencia() {
         String cadena = "";
         int[][] Matriz = new int[Id.length][Arista.length];

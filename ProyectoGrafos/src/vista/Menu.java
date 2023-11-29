@@ -2,6 +2,7 @@ package vista;
 
 import java.util.Scanner;
 
+import logica.Graficar;
 import logica.LGrafo;
 
 public class Menu {
@@ -42,7 +43,8 @@ public class Menu {
 
                     break;
                 case 4:
-
+                    Graficar x = new Graficar(grafo);
+                    x.pintarGrafo(grafo.MatrizAdyacenciaint());
                     break;
                 case 5:
 
