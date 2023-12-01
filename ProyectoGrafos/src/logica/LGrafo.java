@@ -315,9 +315,83 @@ public class LGrafo extends BGrafo {
         try {
             return Id[BuscarIndex(vertice, Id)].equals(vertice);
         } catch (Exception e) {
-            // TODO: handle exception
             return false;
         }
     }
+    public void ListaDeAdyacencia() {
+        for (int i = 0; i < List.length; i++) {
+            System.out.print(Id[i] + " --> ");
+            Nodo p = List[i];
+            while (p != null) {
+                System.out.print("[" + p.getDato() + ", " + p.getDistancia() + "] ");
+                p = p.getLiga();
+                if (p != null) {
+                    System.out.print(" --> ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    public void DFS(String PuntoDeInicio) {
+        boolean[] Visto = new boolean[Id.length];
+        int Punto = BuscarIndex(PuntoDeInicio, Id);
+        DFSUBusqueda(Punto, Visto);
+    }
+    private void DFSUBusqueda(int Punto, boolean[] Visto) {
+        Visto[Punto] = true;
+        System.out.print("("+Id[Punto]+")" + " --> ");
+        Nodo p = List[Punto];
+        while (p != null) {
+            int vecino = BuscarIndex(p.getDato(), Id);
+            if (!Visto[vecino]) {
+                DFSUBusqueda(vecino, Visto);
+            }
+            p = p.getLiga();
+        }
+    }
 
+    public void BFS(String PuntoDeInicio) {
+        boolean[] visitado = new boolean[Id.length];
+        int indiceInicio = BuscarIndex(PuntoDeInicio, Id);
+        int[] porVisitar = new int[Id.length];
+        int Falta = 0;
+        porVisitar[Falta++] = indiceInicio;
+        visitado[indiceInicio] = true;
+        int Actual;
+        while (Falta > 0) {
+            Actual = porVisitar[--Falta];
+            System.out.print("(" + Id[Actual] + ") --> ");
+            Nodo p = List[Actual];
+            while (p != null) {
+                int indiceVecino = BuscarIndex(p.getDato(), Id);
+                if (!visitado[indiceVecino]) {
+                    porVisitar[Falta++] = indiceVecino;
+                    visitado[indiceVecino] = true;
+                }
+                p = p.getLiga();
+            }
+        }
+    }
+    public boolean BusquedaLimitada(String Inicio, String Meta, int LimitePasos) {
+        boolean[] visitado = new boolean[Id.length];
+        return BusquedaDLS(BuscarIndex(Inicio, Id), BuscarIndex(Meta, Id), LimitePasos, visitado);
+    }
+    
+    private boolean BusquedaDLS(int Actual, int Meta, int LimitePasos, boolean[] visitado) {
+        if (Actual == Meta) return true;
+        if (LimitePasos == 0) return false;
+    
+        visitado[Actual] = true;
+        Nodo InfActual = List[Actual];
+        while (InfActual != null) {
+            int neighbor = BuscarIndex(InfActual.getDato(), Id);
+            if (!visitado[neighbor]) {
+                if (BusquedaDLS(neighbor, Meta, LimitePasos - 1, visitado)) {
+                    return true;
+                }
+            }
+            InfActual = InfActual.getLiga();
+        }
+        return false;
+    }
 }
